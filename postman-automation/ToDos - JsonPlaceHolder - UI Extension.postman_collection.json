@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "fe695bb5-de86-4760-8625-299db4c4e9f0",
+		"name": "ToDos - JsonPlaceHolder - UI Extension",
+		"description": "Collection of requests to test todos resources on JsonPlaceHolder (https://jsonplaceholder.typicode.com/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify status of get:/todos is 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify there are 200 records\", function () {\r",
+							"       pm.expect(pm.response.json().length).to.eql(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/todos",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a todo ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify status of post:/todos is 201\", function () {\r",
+							"        pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify if it returns completed as false\", function () {\r",
+							"    var jsonData = pm.response.json();   \r",
+							"    var req = JSON.parse(pm.request.body);\r",
+							"    pm.expect(jsonData.completed).to.equal(req.completed);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify if it returns userId as passed in request\", function () {\r",
+							"    var jsonData = pm.response.json();   \r",
+							"    var req = JSON.parse(pm.request.body);\r",
+							"    pm.expect(jsonData.userId).to.equal(req.userId);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify if it returns title as passed in request\", function () {\r",
+							"    var jsonData = pm.response.json();   \r",
+							"    var req = JSON.parse(pm.request.body);\r",
+							"    pm.expect(jsonData.title).to.equal(req.title);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": 2,\r\n    \"title\": \"new item in todos\",\r\n    \"completed\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/todos",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a todo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify if it returns title as requested to be updated\", function () {\r",
+							"    var jsonData = pm.response.json();   \r",
+							"    var req = JSON.parse(pm.request.body);\r",
+							"    pm.expect(jsonData.title).to.equal(req.title);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify if it returns completed as requested to be updated\", function () {\r",
+							"    var jsonData = pm.response.json();   \r",
+							"    var req = JSON.parse(pm.request.body);\r",
+							"    pm.expect(jsonData.completed).to.equal(req.completed);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify if it returns userId as requested to be updated\", function () {\r",
+							"    var jsonData = pm.response.json();   \r",
+							"    var req = JSON.parse(pm.request.body);\r",
+							"    pm.expect(jsonData.userId).to.equal(req.userId);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify if it returns id against which update is performed\", function () {\r",
+							"    var jsonData = pm.response.json();   \r",
+							"    let val = parseInt(pm.variables.get('id'));\r",
+							"    pm.expect(jsonData.id).to.equal(val);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify status of put:/todos/25 is 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": 2,\r\n    \"title\": \"update on todo item 25 as not completed\",\r\n    \"completed\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/todos/{{id}}",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"todos",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a todo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify status of delete:/todos/25 is 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify there are 200 records\", function () {\r",
+							"    let jsonData = parseInt(pm.response.json().length);\r",
+							"    pm.expect(jsonData).not.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/todos/25",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"todos",
+						"25"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filter: Get all active todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test('Verify if there is any completed todo', () => {\r",
+							"    _.each(jsonData, (item) => {\r",
+							"        pm.expect(item.completed).to.not.equal(true);\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Verify status of get:/todos?completed=false is 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 2000 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/todos?completed=false",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"todos"
+					],
+					"query": [
+						{
+							"key": "completed",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filter: Get all completed todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test('Verify if there is any incomplet todo', () => {\r",
+							"    _.each(jsonData, (item) => {\r",
+							"        pm.expect(item.completed).to.not.equal(false);\r",
+							"    })\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify status of get:/todos?completed=true is 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 2000 ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/todos?completed=true",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"todos"
+					],
+					"query": [
+						{
+							"key": "completed",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
